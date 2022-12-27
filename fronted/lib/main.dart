@@ -21,13 +21,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: const Text("valet parking")
         ),
-<<<<<<< HEAD
       body: const Center(
         child:const Home(),
+
 
         
       ),
@@ -35,14 +38,6 @@ class MyApp extends StatelessWidget {
     
     );
 
-=======
-        home: Scaffold(
-          appBar: AppBar(title: const Text("valet parking")),
-          body: const Center(
-            child: const HomePage(),
-          ),
-        ));
->>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   }
 
 Future getUsuarios() async{
@@ -64,12 +59,7 @@ class HomePage extends StatefulWidget {
 
 /// Esta es la clase '_HomePageState', que extiende de 'State<HomePage>' y representa el estado de la página principal de la aplicación
 class _HomePageState extends State<HomePage> {
-<<<<<<< HEAD
  
-=======
-  /// La cadena de resultado del escaneo de código de barras
-  String result = '';
->>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   @override
   
   Widget build(BuildContext context) {
@@ -96,13 +86,10 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Open Scanner'),
             ),
-<<<<<<< HEAD
-            Text('Barcode Result: $result'),
+          
 
           
           
-=======
->>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
 
             /// Muestra el resultado del escaneo de código de barras
             Text('Barcode Result: $result'),
@@ -111,6 +98,8 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  
 }
 
 /// Esta es la clase 'Home', que extiende de 'StatefulWidget' y representa la pantalla del cronómetro
@@ -163,12 +152,11 @@ class _HomeState extends State<Home> {
       _startStopButtonPressed();
     }
     setState(() {
-      _stopWatch.reset();
-      _setStopwatchText();
+     _stopWatch.reset();
+     _setStopwatchText(); 
     });
   }
 
-<<<<<<< HEAD
   void _setStopwatchText(){
     _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
                      (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
@@ -179,15 +167,6 @@ class _HomeState extends State<Home> {
     _stopwatchText2="no hay cobro";
     
   } */             
-=======
-  /// Establece el texto del cronómetro en función del tiempo transcurrido
-  void _setStopwatchText() {
-    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2, '0') +
-        ':' +
-        (_stopWatch.elapsed.inMinutes % 60).toString().padLeft(2, '0') +
-        ':' +
-        (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, '0');
->>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   }
 
   @override
@@ -200,7 +179,7 @@ class _HomeState extends State<Home> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
-        Expanded(
+                Expanded(
           child: FittedBox(
             fit: BoxFit.none,
             child: Column(children: [Text(
@@ -215,8 +194,8 @@ class _HomeState extends State<Home> {
             ],)
           ),
         ),
-        Center(
-          child: Column(
+        Center(          
+          child: Column(            
             children: <Widget>[
               /// Un botón con un icono de "play" o "stop", dependiendo del estado del cronómetro
               ElevatedButton(
@@ -230,6 +209,7 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
+
       ],
     );
   }

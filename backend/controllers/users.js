@@ -18,37 +18,5 @@ const User = require("../models/User");
       res.status(200).json(user);
     });
   };
-  //funcion para guardar usuarios
-  const addUser= (req, res) => {
-  
-    let user = new User({
-
-        _id: req.body._id,
-      nombre: req.body.nombre,
-      apellido: req.body.apellido,
-      time: req.body.time,
-      date3:req.body.date3,
-
-    });
- 
-    user.save((err, usr) => {
-        err && res.status(500).send(err.message);
-        res.status(200).json(usr);
-      });
-
-    }
-
-//funcion para eliminar usuarios si el id es igual
-    const deleteUser = (req, res) => {
-      User.findById(req.params.id, (err, user) => {
-        user.remove((err) => {
-          if (err) return res.status(500).send(err.message);
-          res.status(200).send();
-        });
-      });
-    };
-
-
-
-    
-module.exports = { findAllUsers, findById,addUser,deleteUser};
+      
+module.exports = { findAllUsers, findById};
