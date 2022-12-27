@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:http/http.dart' as http;
 
 
 void main() {
@@ -8,6 +12,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  
+  
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -22,7 +28,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text("valet parking")
         ),
       body: const Center(
-        child:const HomePage(),
+        child:const Home(),
 
         
       ),
@@ -31,7 +37,15 @@ class MyApp extends StatelessWidget {
     );
 
   }
+
+Future getUsuarios() async{
+ final res= await http.get(Uri.parse(result));
+ final  objetos = jsonDecode(res.body);
+ final lista = List.from(objetos);
 }
+}
+
+ String result = '';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,8 +55,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String result = '';
+ 
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -65,6 +80,8 @@ class _HomePageState extends State<HomePage> {
               child: const Text('Open Scanner'),
             ),
             Text('Barcode Result: $result'),
+
+          
           
 
           ],
@@ -87,6 +104,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool _isStart = true;
   String _stopwatchText = '00:00:00';
+  String _stopwatchText2=" ";
   final _stopWatch = new Stopwatch();
   final _timeout = const Duration(seconds: 1);
 
@@ -130,14 +148,17 @@ class _HomeState extends State<Home> {
     _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
                      (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
                      (_stopWatch.elapsed.inSeconds%60).toString().padLeft(2,'0');
+
+  _stopwatchText2= 'precio actual ' +(((_stopWatch.elapsed.inHours)*60+(_stopWatch.elapsed.inMinutes)%60)*20).toString();
+  /*if (double.parse(_stopwatchText2)>30*20) {
+    _stopwatchText2="no hay cobro";
+    
+  } */             
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cronômetro'),
-      ),
       body: _buildBody(),
     );
   }
@@ -148,10 +169,16 @@ class _HomeState extends State<Home> {
                 Expanded(
           child: FittedBox(
             fit: BoxFit.none,
-            child: Text(
+            child: Column(children: [Text(
+
               _stopwatchText,
+              
               style: TextStyle(fontSize: 72),
+            ),Text(
+              _stopwatchText2,
+               style: TextStyle(fontSize: 72),
             ),
+            ],)
           ),
         ),
         Center(          
