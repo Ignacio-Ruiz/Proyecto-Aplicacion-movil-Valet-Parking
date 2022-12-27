@@ -13,41 +13,32 @@ void main() {
 
 /// Esta es la clase `MyApp`, que extiende de 'StatelessWidget' y representa la aplicación Flutter
 class MyApp extends StatelessWidget {
-  
-  
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("valet parking")
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-      body: const Center(
-        child:const Home(),
-
-
-        
-      ),
-      )
-    
-    );
-
+        home: Scaffold(
+          appBar: AppBar(title: const Text("valet parking")),
+          body: const Center(
+            child: const Home(),
+          ),
+        ));
   }
 
-Future getUsuarios() async{
- final res= await http.get(Uri.parse(result));
- final  objetos = jsonDecode(res.body);
- final lista = List.from(objetos);
-}
+  Future getUsuarios() async {
+    final res = await http.get(Uri.parse(result));
+    final objetos = jsonDecode(res.body);
+    final lista = List.from(objetos);
+  }
 }
 
- String result = '';
+String result = '';
 
 /// Esta es la clase 'HomePage', que extiende de 'StatefulWidget' y representa la página principal de la aplicación
 class HomePage extends StatefulWidget {
@@ -59,9 +50,7 @@ class HomePage extends StatefulWidget {
 
 /// Esta es la clase '_HomePageState', que extiende de 'State<HomePage>' y representa el estado de la página principal de la aplicación
 class _HomePageState extends State<HomePage> {
- 
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -86,10 +75,6 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Open Scanner'),
             ),
-          
-
-          
-          
 
             /// Muestra el resultado del escaneo de código de barras
             Text('Barcode Result: $result'),
@@ -98,8 +83,6 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
 }
 
 /// Esta es la clase 'Home', que extiende de 'StatefulWidget' y representa la pantalla del cronómetro
@@ -113,7 +96,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool _isStart = true;
   String _stopwatchText = '00:00:00';
-  String _stopwatchText2=" ";
+  String _stopwatchText2 = " ";
   final _stopWatch = new Stopwatch();
   final _timeout = const Duration(seconds: 1);
 
@@ -152,26 +135,35 @@ class _HomeState extends State<Home> {
       _startStopButtonPressed();
     }
     setState(() {
-     _stopWatch.reset();
-     _setStopwatchText(); 
+      _stopWatch.reset();
+      _setStopwatchText();
     });
   }
 
-  void _setStopwatchText(){
-    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
-                     (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
-                     (_stopWatch.elapsed.inSeconds%60).toString().padLeft(2,'0');
+  void _setStopwatchText() {
+    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2, '0') +
+        ':' +
+        (_stopWatch.elapsed.inMinutes % 60).toString().padLeft(2, '0') +
+        ':' +
+        (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, '0');
 
-  _stopwatchText2= 'precio actual ' +(((_stopWatch.elapsed.inHours)*60+(_stopWatch.elapsed.inMinutes)%60)*20).toString();
-  /*if (double.parse(_stopwatchText2)>30*20) {
+    _stopwatchText2 = 'precio actual ' +
+        (((_stopWatch.elapsed.inHours) * 60 +
+                    (_stopWatch.elapsed.inMinutes) % 60) *
+                20)
+            .toString();
+    /*if (double.parse(_stopwatchText2)>30*20) {
     _stopwatchText2="no hay cobro";
     
-  } */             
+  } */
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Cronometro'),
+      ),
       body: _buildBody(),
     );
   }
@@ -179,23 +171,24 @@ class _HomeState extends State<Home> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
-                Expanded(
+        Expanded(
           child: FittedBox(
-            fit: BoxFit.none,
-            child: Column(children: [Text(
-
-              _stopwatchText,
-              
-              style: TextStyle(fontSize: 72),
-            ),Text(
-              _stopwatchText2,
-               style: TextStyle(fontSize: 72),
-            ),
-            ],)
-          ),
+              fit: BoxFit.none,
+              child: Column(
+                children: [
+                  Text(
+                    _stopwatchText,
+                    style: TextStyle(fontSize: 72),
+                  ),
+                  Text(
+                    _stopwatchText2,
+                    style: TextStyle(fontSize: 72),
+                  ),
+                ],
+              )),
         ),
-        Center(          
-          child: Column(            
+        Center(
+          child: Column(
             children: <Widget>[
               /// Un botón con un icono de "play" o "stop", dependiendo del estado del cronómetro
               ElevatedButton(
@@ -209,7 +202,6 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-
       ],
     );
   }
