@@ -1,97 +1,175 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+void main() {
+  runApp(const MyApp());
 }
 
-class _MyAppState extends State<MyApp> {
-  String _scanBarcode = 'Unknown';
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: const Text("valet parking")
+        ),
+      body: const Center(
+        child:const HomePage(),
+
+        
+      ),
+      )
+    
+    );
+
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  void initState() {
-    super.initState();
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String result = '';
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                var res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SimpleBarcodeScannerPage(),
+                    ));
+                setState(() {
+                  if (res is String) {
+                    result = res;
+                  }
+                });
+              },
+              child: const Text('Open Scanner'),
+            ),
+            Text('Barcode Result: $result'),
+          
+
+          ],
+        ),
+      ),
+    );
   }
 
-  Future<void> startBarcodeScanStream() async {
-    FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-        .listen((barcode) => print(barcode));
+  
+}
+
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  bool _isStart = true;
+  String _stopwatchText = '00:00:00';
+  final _stopWatch = new Stopwatch();
+  final _timeout = const Duration(seconds: 1);
+
+  void _startTimeout() {
+    new Timer(_timeout, _handleTimeout);
   }
 
-  Future<void> scanQR() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
+  void _handleTimeout() {
+    if (_stopWatch.isRunning) {
+      _startTimeout();
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
     setState(() {
-      _scanBarcode = barcodeScanRes;
+      _setStopwatchText();
     });
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
+  void _startStopButtonPressed() {
     setState(() {
-      _scanBarcode = barcodeScanRes;
+      if (_stopWatch.isRunning) {
+        _isStart = true;
+        _stopWatch.stop();
+      } else {
+        _isStart = false;
+        _stopWatch.start();
+        _startTimeout();
+      }
     });
+  }
+
+  void _resetButtonPressed(){
+    if(_stopWatch.isRunning){
+      _startStopButtonPressed();
+    }
+    setState(() {
+     _stopWatch.reset();
+     _setStopwatchText(); 
+    });
+  }
+
+  void _setStopwatchText(){
+    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
+                     (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
+                     (_stopWatch.elapsed.inSeconds%60).toString().padLeft(2,'0');
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(title: const Text('Barcode scan')),
-            body: Builder(builder: (BuildContext context) {
-              return Container(
-                  alignment: Alignment.center,
-                  child: Flex(
-                      direction: Axis.vertical,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        ElevatedButton(
-                            onPressed: () => scanBarcodeNormal(),
-                            child: Text('Start barcode scan')),
-                        ElevatedButton(
-                            onPressed: () => scanQR(),
-                            child: Text('Start QR scan')),
-                        ElevatedButton(
-                            onPressed: () => startBarcodeScanStream(),
-                            child: Text('Start barcode scan stream')),
-                        Text('Scan result : $_scanBarcode\n',
-                            style: TextStyle(fontSize: 20))
-                      ]));
-            })));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Cronômetro'),
+      ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    return Column(
+      children: <Widget>[
+                Expanded(
+          child: FittedBox(
+            fit: BoxFit.none,
+            child: Text(
+              _stopwatchText,
+              style: TextStyle(fontSize: 72),
+            ),
+          ),
+        ),
+        Center(          
+          child: Column(            
+            children: <Widget>[
+              ElevatedButton(
+                child: Icon(_isStart ? Icons.play_arrow : Icons.stop),
+                onPressed: _startStopButtonPressed,
+              ),
+              ElevatedButton(
+                child: Text('Reset'),
+                onPressed: _resetButtonPressed,
+              ),
+            ],
+          ),
+        ),
+
+      ],
+    );
   }
 }
