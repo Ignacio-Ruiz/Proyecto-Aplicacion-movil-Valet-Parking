@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 
-
+/// La clase principal de la aplicación Flutter
 void main() {
   runApp(const MyApp());
 }
 
+/// Esta es la clase `MyApp`, que extiende de 'StatelessWidget' y representa la aplicación Flutter
 class MyApp extends StatelessWidget {
   
   
@@ -20,13 +21,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("valet parking")
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+<<<<<<< HEAD
       body: const Center(
         child:const Home(),
 
@@ -36,6 +35,14 @@ class MyApp extends StatelessWidget {
     
     );
 
+=======
+        home: Scaffold(
+          appBar: AppBar(title: const Text("valet parking")),
+          body: const Center(
+            child: const HomePage(),
+          ),
+        ));
+>>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   }
 
 Future getUsuarios() async{
@@ -47,6 +54,7 @@ Future getUsuarios() async{
 
  String result = '';
 
+/// Esta es la clase 'HomePage', que extiende de 'StatefulWidget' y representa la página principal de la aplicación
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -54,8 +62,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+/// Esta es la clase '_HomePageState', que extiende de 'State<HomePage>' y representa el estado de la página principal de la aplicación
 class _HomePageState extends State<HomePage> {
+<<<<<<< HEAD
  
+=======
+  /// La cadena de resultado del escaneo de código de barras
+  String result = '';
+>>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   @override
   
   Widget build(BuildContext context) {
@@ -64,14 +78,17 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            /// Un botón para abrir el escáner de código de barras
             ElevatedButton(
               onPressed: () async {
+                /// Navega a la página del escáner de código de barras y obtiene el resultado
                 var res = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SimpleBarcodeScannerPage(),
                     ));
                 setState(() {
+                  /// Si el resultado es una cadena, asigna el resultado a la variable de resultado
                   if (res is String) {
                     result = res;
                   }
@@ -79,21 +96,24 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Open Scanner'),
             ),
+<<<<<<< HEAD
             Text('Barcode Result: $result'),
 
           
           
+=======
+>>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
 
+            /// Muestra el resultado del escaneo de código de barras
+            Text('Barcode Result: $result'),
           ],
         ),
       ),
     );
   }
-
-  
 }
 
-
+/// Esta es la clase 'Home', que extiende de 'StatefulWidget' y representa la pantalla del cronómetro
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -108,10 +128,12 @@ class _HomeState extends State<Home> {
   final _stopWatch = new Stopwatch();
   final _timeout = const Duration(seconds: 1);
 
+  /// Inicia el temporizador para actualizar el cronómetro cada vez que expire
   void _startTimeout() {
     new Timer(_timeout, _handleTimeout);
   }
 
+  /// Maneja el evento de expiración del temporizador y actualiza el cronómetro si está en estado "iniciado"
   void _handleTimeout() {
     if (_stopWatch.isRunning) {
       _startTimeout();
@@ -121,6 +143,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+  /// Maneja el evento de presión del botón "Iniciar/Detener"
   void _startStopButtonPressed() {
     setState(() {
       if (_stopWatch.isRunning) {
@@ -134,16 +157,18 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _resetButtonPressed(){
-    if(_stopWatch.isRunning){
+  /// Maneja el evento de presión del botón "Reiniciar"
+  void _resetButtonPressed() {
+    if (_stopWatch.isRunning) {
       _startStopButtonPressed();
     }
     setState(() {
-     _stopWatch.reset();
-     _setStopwatchText(); 
+      _stopWatch.reset();
+      _setStopwatchText();
     });
   }
 
+<<<<<<< HEAD
   void _setStopwatchText(){
     _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
                      (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
@@ -154,6 +179,15 @@ class _HomeState extends State<Home> {
     _stopwatchText2="no hay cobro";
     
   } */             
+=======
+  /// Establece el texto del cronómetro en función del tiempo transcurrido
+  void _setStopwatchText() {
+    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2, '0') +
+        ':' +
+        (_stopWatch.elapsed.inMinutes % 60).toString().padLeft(2, '0') +
+        ':' +
+        (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, '0');
+>>>>>>> 415aca88169e7ebf0fa09076f5398a8bf4a2246a
   }
 
   @override
@@ -166,7 +200,7 @@ class _HomeState extends State<Home> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
-                Expanded(
+        Expanded(
           child: FittedBox(
             fit: BoxFit.none,
             child: Column(children: [Text(
@@ -181,9 +215,10 @@ class _HomeState extends State<Home> {
             ],)
           ),
         ),
-        Center(          
-          child: Column(            
+        Center(
+          child: Column(
             children: <Widget>[
+              /// Un botón con un icono de "play" o "stop", dependiendo del estado del cronómetro
               ElevatedButton(
                 child: Icon(_isStart ? Icons.play_arrow : Icons.stop),
                 onPressed: _startStopButtonPressed,
@@ -195,7 +230,6 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-
       ],
     );
   }
