@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
-
 import 'package:appvalet/models/crono.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:http/http.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 
@@ -17,41 +15,29 @@ void main() {
 
 /// Esta es la clase `MyApp`, que extiende de 'StatelessWidget' y representa la aplicación Flutter
 class MyApp extends StatelessWidget {
-  
-  
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("valet parking")
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-      body: const Center(
-        child:const HomePage(),
 
-
-        
-      ),
-      )
-    
-    );
-
+        home: Scaffold(
+          appBar: AppBar(title: const Text("valet parking")),
+          body: const Center(
+            child: const HomePage(),
+          ),
+        ));
   }
 
-/*Future getUsuarios() async{
- final res= await http.get(Uri.parse(result));
- final  objetos = jsonDecode(res.body);
- final lista = List.from(objetos);
-}*/
+
 }
 
- String result = '';
+String result = '';
 
 /// Esta es la clase 'HomePage', que extiende de 'StatefulWidget' y representa la página principal de la aplicación
 class HomePage extends StatefulWidget {
@@ -63,9 +49,7 @@ class HomePage extends StatefulWidget {
 
 /// Esta es la clase '_HomePageState', que extiende de 'State<HomePage>' y representa el estado de la página principal de la aplicación
 class _HomePageState extends State<HomePage> {
- 
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -90,7 +74,6 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Open Scanner'),
             ),
-          
 
             /// Muestra el resultado del escaneo de código de barras
             Text('Barcode Result: $result'),
@@ -108,6 +91,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
 }
