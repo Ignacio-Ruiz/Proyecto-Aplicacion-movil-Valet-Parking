@@ -1,12 +1,8 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:html';
+
 import 'package:appvalet/models/crono.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/retry.dart';
+import 'package:dio/dio.dart';
 
 /// La clase principal de la aplicación Flutter
 void main() {
@@ -37,7 +33,7 @@ class MyApp extends StatelessWidget {
 
 }
 
-String result = '';
+
 
 /// Esta es la clase 'HomePage', que extiende de 'StatefulWidget' y representa la página principal de la aplicación
 class HomePage extends StatefulWidget {
@@ -49,6 +45,7 @@ class HomePage extends StatefulWidget {
 
 /// Esta es la clase '_HomePageState', que extiende de 'State<HomePage>' y representa el estado de la página principal de la aplicación
 class _HomePageState extends State<HomePage> {
+  String result = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,13 +74,14 @@ class _HomePageState extends State<HomePage> {
 
             /// Muestra el resultado del escaneo de código de barras
             Text('Barcode Result: $result'),
+            
                  ElevatedButton( child: const Text("cronometro"),//el boton , y como se llamara el boton
-             onPressed: ()=>{//onPressed, quiere decir que cuando se precione se ejecutara lo siguiente
-             if(result !=' '){
+             onPressed: (){//onPressed, quiere decir que cuando se precione se ejecutara lo siguiente
+             if(result !=' '){ //cambiar despues
               Navigator.push(
                 context,
                 MaterialPageRoute(builder:(context) =>const Crono())//le decimos a que ruta queremos que se vaya.con el nombre de class de widget de la otra pág en este caso 'opcion'
-              )
+              );
              }
              })
           ],

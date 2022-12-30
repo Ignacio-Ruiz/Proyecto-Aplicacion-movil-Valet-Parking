@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
+//import 'dart:html';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:http/http.dart';
+import 'dart:async';
+//import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+//import 'package:http/http.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:http/retry.dart';
+//import 'package:http/retry.dart';
 
 import '../main.dart';
+
+//import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 
 
@@ -26,18 +31,29 @@ class Crono extends StatefulWidget {
 
 class _Crono extends State<Crono> {
 
-  /*Future<Map> getTodoList() async {
+ var productosData;
+
+
+   getProductos() async {
+    http.Response response =
+        await http.get(Uri.parse('http://localhost:3000/api/vars/all'));
+    setState(() {
+      productosData = json.decode(response.body) as List;
+      print(productosData);
+    });
+  }
+
+  Future<Map> getTodoList() async {
   try {
-    var response = await Dio().get(('http://10.0.2.2:3000/todo/product'));//resivimos los datos del api
+    var response = await Dio().get(('http://localhost:3000/api/vars/all'));//resivimos los datos del api para sacar el precio del api
     print(response.data);
+    print("hola");
     
     return response.data;
       } catch (e) {
     return <String, Object>{};
     }
-  }*/
-
-
+  }
 
 
 
@@ -87,7 +103,17 @@ class _Crono extends State<Crono> {
     });
   }
 
-  void _setStopwatchText(){
+  Future<void> _setStopwatchText() async {
+
+        http.Response response =
+        await http.get(Uri.parse('http://localhost:3000/api/vars/all'));
+    setState(() {
+      productosData = json.decode(response.body);
+      print(productosData['precioM']);
+      
+    });
+    
+  
     _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
                      (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
                      (_stopWatch.elapsed.inSeconds%60).toString().padLeft(2,'0');
@@ -103,6 +129,7 @@ class _Crono extends State<Crono> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildBody(),
+  
     );
   }
 
