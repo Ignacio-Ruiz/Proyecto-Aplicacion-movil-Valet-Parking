@@ -24,18 +24,9 @@ class _Crono extends State<Crono> {
 
  var productosData;
 
-   getProductos() async {
-    http.Response response =
-        await http.get(Uri.parse('http://localhost:3000/api/vars/all'));
-    setState(() {
-      productosData = json.decode(response.body) as List;
-      print(productosData);
-    });
-  }
-
   Future<Map> getTodoList() async {
   try {
-    var response = await Dio().get(('http://localhost:3000/api/vars/all'));//resivimos los datos del api para sacar el precio del api
+    var response = await Dio().get(('http://10.0.2.2:3000/api/vars/all'));//resivimos los datos del api para sacar el precio del api
     print(response.data);
     print("hola");
     
@@ -104,7 +95,7 @@ class _Crono extends State<Crono> {
     var precio;
 
         http.Response response =
-        await http.get(Uri.parse('http://localhost:3000/api/vars/all'));
+        await http.get(Uri.parse('http://10.0.2.2:3000/api/vars/all'));
     setState(() {
       productosData = json.decode(response.body);
     

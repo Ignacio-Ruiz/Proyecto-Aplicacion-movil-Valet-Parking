@@ -6,7 +6,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
