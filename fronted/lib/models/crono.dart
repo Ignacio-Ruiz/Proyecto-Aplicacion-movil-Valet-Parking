@@ -1,28 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
-//import 'dart:html';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-//import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-//import 'package:http/http.dart';
-
-//import 'package:http/retry.dart';
-
 import '../main.dart';
-
-//import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
-
-
-
-
-
 class Crono extends StatefulWidget {
-  const Crono({super.key});
+  
+  Crono(this.time);
+  String time;
+
+  
+
 
   @override
   State<Crono> createState() => _Crono();
@@ -30,9 +19,10 @@ class Crono extends StatefulWidget {
 }
 
 class _Crono extends State<Crono> {
+  
+  
 
  var productosData;
-
 
    getProductos() async {
     http.Response response =
@@ -103,26 +93,64 @@ class _Crono extends State<Crono> {
     });
   }
 
+  Function(){
+
+  }
+  
   Future<void> _setStopwatchText() async {
+
+     
+
+    var precio;
 
         http.Response response =
         await http.get(Uri.parse('http://localhost:3000/api/vars/all'));
     setState(() {
       productosData = json.decode(response.body);
-      print(productosData['precioM']);
+    
+     // print(productosData[0]['precioM']);
+      precio=productosData[0]['precioM'];
+      //print(precio);
       
     });
-    
-  
-    _stopwatchText = _stopWatch.elapsed.inHours.toString().padLeft(2,'0') + ':'+
-                     (_stopWatch.elapsed.inMinutes%60).toString().padLeft(2,'0') + ':' +
+     //print(int.parse(precio));
+    //print(widget.time);
+    var time=widget.time;
+    var hora;
+    var minuto;
+    time.toString();
+    //print(time.split(":")[0]);
+    //print(time.split(":")[1]);
+     hora =time.split(":")[0];
+     minuto = time.split(":")[1];
+
+      final now = DateTime.now();
+      //print(now.hour);
+     // print(now.minute);
+      var horaactual = now.hour;
+      var minutoactual = now.minute;
+
+    //print(horaactual-int.parse(hora));
+    //print((minutoactual-int.parse(minuto)).abs());  
+    var diferenciaH = (horaactual-int.parse(hora)).abs();
+    var diferenciaM = (minutoactual-int.parse(minuto)).abs();
+
+    _stopwatchText = (_stopWatch.elapsed.inHours+diferenciaH).toString().padLeft(2,'0') + ':'+
+                     ((_stopWatch.elapsed.inMinutes%60)+diferenciaM).toString().padLeft(2,'0') + ':' +
                      (_stopWatch.elapsed.inSeconds%60).toString().padLeft(2,'0');
 
-  _stopwatchText2= 'precio actual ' +(((_stopWatch.elapsed.inHours)*60+(_stopWatch.elapsed.inMinutes)%60)*20).toString();
-  /*if (double.parse(_stopwatchText2)>30*20) {
-    _stopwatchText2="no hay cobro";
+  
+
+ 
+  if (diferenciaH>=1 || diferenciaM>=30 || ((_stopWatch.elapsed.inMinutes%60)+diferenciaM)>=30) {
+    print(diferenciaH);
+    _stopwatchText2= 'precio actual ' +(((_stopWatch.elapsed.inHours+diferenciaH)*60+(_stopWatch.elapsed.inMinutes+diferenciaM)%60)*int.parse(precio)).toString();
     
-  } */             
+  } 
+  else{
+  _stopwatchText2 = "no hay cobro los primeros 30 minutos";
+    
+  }          
   }
 
   @override
@@ -143,10 +171,10 @@ class _Crono extends State<Crono> {
 
               _stopwatchText,
               
-              style: TextStyle(fontSize: 72),
+              style: TextStyle(fontSize: 60),
             ),Text(
               _stopwatchText2,
-               style: TextStyle(fontSize: 72),
+               style: TextStyle(fontSize: 60),
             ),
             ],)
           ),

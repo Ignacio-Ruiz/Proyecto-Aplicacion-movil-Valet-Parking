@@ -2,7 +2,8 @@
 import 'package:appvalet/models/crono.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 /// La clase principal de la aplicación Flutter
 void main() {
@@ -76,13 +77,33 @@ class _HomePageState extends State<HomePage> {
             Text('Barcode Result: $result'),
             
                  ElevatedButton( child: const Text("cronometro"),//el boton , y como se llamara el boton
-             onPressed: (){//onPressed, quiere decir que cuando se precione se ejecutara lo siguiente
-             if(result !=' '){ //cambiar despues
+
+
+
+             onPressed: () async {//onPressed, quiere decir que cuando se precione se ejecutara lo siguiente
+
+                 var productosData;
+                 var hora;
+                 var minuto;
+                 var time;           
+                  http.Response response =
+                  await http.get(Uri.parse(result)); //cambiar por result qr
+              setState(() {
+                productosData = json.decode(response.body);
+              
+                print(productosData['time']);
+                time = productosData['time'];
+                
+              });
+
+               if(result !=' '){ //cambiar despues
               Navigator.push(
                 context,
-                MaterialPageRoute(builder:(context) =>const Crono())//le decimos a que ruta queremos que se vaya.con el nombre de class de widget de la otra pág en este caso 'opcion'
+                MaterialPageRoute(builder:(context) => Crono(time))
+                //le decimos a que ruta queremos que se vaya.con el nombre de class de widget de la otra pág en este caso 'opcion'
               );
              }
+  
              })
           ],
         ),
