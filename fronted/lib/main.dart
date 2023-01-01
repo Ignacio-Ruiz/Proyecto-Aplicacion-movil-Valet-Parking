@@ -15,6 +15,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _scanBarcode = 'Unknown';
+  String _scanBarcode2 = 'Unknown';
 
   @override
   void initState() {
@@ -39,6 +40,10 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       _scanBarcode = barcodeScanRes;
+      if (_scanBarcode !="Unknown") {
+        print("es distinto");
+        _scanBarcode2="codigo qr leido";
+      }
     });
   }
 
@@ -52,8 +57,10 @@ class _MyAppState extends State<MyApp> {
                   child: Text('Valet Parking', textAlign: TextAlign.center)),
               backgroundColor: Colors.redAccent,
             ),
+            
             body: Builder(builder: (BuildContext context) {
               return Container(
+                
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
@@ -66,14 +73,21 @@ class _MyAppState extends State<MyApp> {
                       direction: Axis.vertical,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
+                        Text("Lector QR",
+                         style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
                         ElevatedButton(
                             onPressed: () => scanQR(),
+                            
                             child: const Text('Escanear')),
-                        Text(
-                          'Resultado Escaner : $_scanBarcode\n',
+                        Text (
+
+                          'Escaner : $_scanBarcode2\n',
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
+                        Text("Cronometro para tiempo", style: const TextStyle(
+                              fontSize: 20, color: Colors.white)),
                         ElevatedButton(
                             child: const Text(
                                 "Verificación"), //el boton , y como se llamara el boton

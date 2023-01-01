@@ -78,11 +78,12 @@ class _Crono extends State<Crono> {
 
   Future<void> _setStopwatchText() async {
     var precio;
-
+    //se piden los datos desde la api 
     http.Response response =
         await http.get(Uri.parse('http://10.0.2.2:3000/api/vars/all'));
     setState(() {
       productosData = json.decode(response.body);
+      //los print comentados fueron para probar los datos que se reciven desde el api
 
       // print(productosData[0]['precioM']);
       precio = productosData[0]['precioM'];
@@ -94,22 +95,28 @@ class _Crono extends State<Crono> {
     var hora;
     var minuto;
     time.toString();
+    //Se separa entre horas y minutos
+
     //print(time.split(":")[0]);
     //print(time.split(":")[1]);
     hora = time.split(":")[0];
     minuto = time.split(":")[1];
 
+    //funcion para sacar la hora actual del dispositivo
     final now = DateTime.now();
     //print(now.hour);
     // print(now.minute);
     var horaactual = now.hour;
     var minutoactual = now.minute;
 
-    //print(horaactual-int.parse(hora));
+    //Se saca la resta en valor absoluto para agregarlos al cronometro
+
+    //print(horaactual-int.parse(hora).abs);
     //print((minutoactual-int.parse(minuto)).abs());
     var diferenciaH = (horaactual - int.parse(hora)).abs();
     var diferenciaM = (minutoactual - int.parse(minuto)).abs();
 
+//Funcion de cronometro
     _stopwatchText =
         (_stopWatch.elapsed.inHours + diferenciaH).toString().padLeft(2, '0') +
             ':' +
@@ -119,6 +126,8 @@ class _Crono extends State<Crono> {
             ':' +
             (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, '0');
 
+//ve si la diferencia entre la hora actual y la hora que esta en el backend supera 1 hora o 30 mintuos tambien 
+//en caso de que empiece en ceros esta la funcion que ve cuando supere los 30 minutos
     if (diferenciaH >= 1 ||
         diferenciaM >= 30 ||
         ((_stopWatch.elapsed.inMinutes % 60) + diferenciaM) >= 30) {
@@ -154,7 +163,7 @@ class _Crono extends State<Crono> {
                   ),
                   Text(
                     _stopwatchText2,
-                    style: TextStyle(fontSize: 60),
+                    style: TextStyle(fontSize: 27),
                   ),
                 ],
               )),
