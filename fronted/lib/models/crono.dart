@@ -174,7 +174,7 @@ class _Crono extends State<Crono> {
                     _stopwatchText,
                     style: TextStyle(fontSize: 60),
                   ),
-                  Text("precio actual"+
+                  Text("precio actual "+
                     _stopwatchText2,
                     style: TextStyle(fontSize: 27),
                   ),
