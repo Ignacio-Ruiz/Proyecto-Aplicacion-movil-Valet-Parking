@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_paypal/flutter_paypal.dart';
 
 class Crono extends StatefulWidget {
   Crono(this.time);
@@ -50,6 +52,17 @@ class _Crono extends State<Crono> {
   }
 
   /// Maneja el evento de presión del botón "Iniciar/Detener"
+  
+  
+
+  void StopButtonPressed() {
+    setState(() {
+      if (_stopWatch.isRunning) {
+        _isStart = true;
+        _stopWatch.stop();
+      }
+    });
+  }
   void _startStopButtonPressed() {
     setState(() {
       if (_stopWatch.isRunning) {
@@ -73,8 +86,9 @@ class _Crono extends State<Crono> {
       _setStopwatchText();
     });
   }
+  
 
-  Function() {}
+  
 
   Future<void> _setStopwatchText() async {
     var precio;
@@ -132,13 +146,12 @@ class _Crono extends State<Crono> {
         diferenciaM >= 30 ||
         ((_stopWatch.elapsed.inMinutes % 60) + diferenciaM) >= 30) {
       print(diferenciaH);
-      _stopwatchText2 = 'Precio actual: ' +
-          (((_stopWatch.elapsed.inHours + diferenciaH) * 60 +
+      _stopwatchText2 =  (((_stopWatch.elapsed.inHours + diferenciaH) * 60 +
                       (_stopWatch.elapsed.inMinutes + diferenciaM) % 60) *
                   int.parse(precio))
               .toString();
     } else {
-      _stopwatchText2 = "No hay cobro los primeros 30 minutos";
+      _stopwatchText2 = "0";
     }
   }
 
@@ -161,7 +174,7 @@ class _Crono extends State<Crono> {
                     _stopwatchText,
                     style: TextStyle(fontSize: 60),
                   ),
-                  Text(
+                  Text("precio actual"+
                     _stopwatchText2,
                     style: TextStyle(fontSize: 27),
                   ),
@@ -180,6 +193,75 @@ class _Crono extends State<Crono> {
                 child: Text('Reset'),
                 onPressed: _resetButtonPressed,
               ),
+              ElevatedButton( child: const Text(
+                                "Pagar"),
+                onPressed: () => {
+                  StopButtonPressed(),
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => UsePaypal(
+                            sandboxMode: true,
+                            clientId:
+                                "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+                            secretKey:
+                                "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                            returnURL: "https://samplesite.com/return",
+                            cancelURL: "https://samplesite.com/cancel",
+                            transactions: const [
+                              
+                              {
+                                "amount": {
+                                  "total": '10.12',
+                                  "currency": "USD",
+                                  "details": {
+                                    "subtotal": '10.12',
+                                    "shipping": '0',
+                                    "shipping_discount": 0
+                                  }
+                                },
+                                "description":
+                                    "The payment transaction description.",
+                                // "payment_options": {
+                                //   "allowed_payment_method":
+                                //       "INSTANT_FUNDING_SOURCE"
+                                // },
+                                "item_list": {
+                                  "items": [
+                                    {
+                                      "name": "A demo product",
+                                      "quantity": 1,
+                                      "price": '10.12',
+                                      "currency": "USD"
+                                    }
+                                  ],
+
+                                  // shipping address is not required though
+                                  "shipping_address": {
+                                    "recipient_name": "Jane Foster",
+                                    "line1": "Travis County",
+                                    "line2": "",
+                                    "city": "Austin",
+                                    "country_code": "US",
+                                    "postal_code": "73301",
+                                    "phone": "+00000000",
+                                    "state": "Texas"
+                                  },
+                                }
+                              }
+                            ],
+                            note: "Contact us for any questions on your order.",
+                            onSuccess: (Map params) async {
+                              print("onSuccess: $params");
+                            },
+                            onError: (error) {
+                              print("onError: $error");
+                            },
+                            onCancel: (params) {
+                              print('cancelled: $params');
+                            }),
+                      ),
+                    )
+                  },)
             ],
           ),
         ),
