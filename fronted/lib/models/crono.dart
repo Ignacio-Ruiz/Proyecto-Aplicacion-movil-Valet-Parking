@@ -16,19 +16,6 @@ class Crono extends StatefulWidget {
 
 class _Crono extends State<Crono> {
   var productosData;
-  Future<Map> getTodoList() async {
-    try {
-      var response = await Dio().get(
-          ('http://10.0.2.2:3000/api/vars/all')); //resivimos los datos del api para sacar el precio del api
-      print(response.data);
-      print("hola");
-
-      return response.data;
-    } catch (e) {
-      return <String, Object>{};
-    }
-  }
-
   bool _isStart = true;
   String _stopwatchText = '00:00:00';
   String _stopwatchText2 = " ";

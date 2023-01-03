@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
-                        Text("Cronometro para tiempo",
+                        Text("Cronómetro para tiempo",
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.white)),
                         ElevatedButton(
