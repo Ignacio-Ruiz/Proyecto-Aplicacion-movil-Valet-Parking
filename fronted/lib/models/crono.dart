@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
@@ -52,8 +51,6 @@ class _Crono extends State<Crono> {
   }
 
   /// Maneja el evento de presión del botón "Iniciar/Detener"
-  
-  
 
   void StopButtonPressed() {
     setState(() {
@@ -63,6 +60,7 @@ class _Crono extends State<Crono> {
       }
     });
   }
+
   void _startStopButtonPressed() {
     setState(() {
       if (_stopWatch.isRunning) {
@@ -86,13 +84,10 @@ class _Crono extends State<Crono> {
       _setStopwatchText();
     });
   }
-  
-
-  
 
   Future<void> _setStopwatchText() async {
     var precio;
-    //se piden los datos desde la api 
+    //se piden los datos desde la api
     http.Response response =
         await http.get(Uri.parse('http://10.0.2.2:3000/api/vars/all'));
     setState(() {
@@ -140,16 +135,16 @@ class _Crono extends State<Crono> {
             ':' +
             (_stopWatch.elapsed.inSeconds % 60).toString().padLeft(2, '0');
 
-//ve si la diferencia entre la hora actual y la hora que esta en el backend supera 1 hora o 30 mintuos tambien 
+//ve si la diferencia entre la hora actual y la hora que esta en el backend supera 1 hora o 30 mintuos tambien
 //en caso de que empiece en ceros esta la funcion que ve cuando supere los 30 minutos
     if (diferenciaH >= 1 ||
         diferenciaM >= 30 ||
         ((_stopWatch.elapsed.inMinutes % 60) + diferenciaM) >= 30) {
       print(diferenciaH);
-      _stopwatchText2 =  (((_stopWatch.elapsed.inHours + diferenciaH) * 60 +
-                      (_stopWatch.elapsed.inMinutes + diferenciaM) % 60) *
-                  int.parse(precio))
-              .toString();
+      _stopwatchText2 = (((_stopWatch.elapsed.inHours + diferenciaH) * 60 +
+                  (_stopWatch.elapsed.inMinutes + diferenciaM) % 60) *
+              int.parse(precio))
+          .toString();
     } else {
       _stopwatchText2 = "0";
     }
@@ -174,8 +169,8 @@ class _Crono extends State<Crono> {
                     _stopwatchText,
                     style: TextStyle(fontSize: 60),
                   ),
-                  Text("precio actual "+
-                    _stopwatchText2,
+                  Text(
+                    "precio actual " + _stopwatchText2,
                     style: TextStyle(fontSize: 27),
                   ),
                 ],
@@ -193,75 +188,75 @@ class _Crono extends State<Crono> {
                 child: Text('Reset'),
                 onPressed: _resetButtonPressed,
               ),
-              ElevatedButton( child: const Text(
-                                "Pagar"),
+              ElevatedButton(
+                child: const Text("Pagar"),
                 onPressed: () => {
                   StopButtonPressed(),
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => UsePaypal(
-                            sandboxMode: true,
-                            clientId:
-                                "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
-                            secretKey:
-                                "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
-                            returnURL: "https://samplesite.com/return",
-                            cancelURL: "https://samplesite.com/cancel",
-                            transactions: const [
-                              
-                              {
-                                "amount": {
-                                  "total": '10.12',
-                                  "currency": "USD",
-                                  "details": {
-                                    "subtotal": '10.12',
-                                    "shipping": '0',
-                                    "shipping_discount": 0
-                                  }
-                                },
-                                "description":
-                                    "The payment transaction description.",
-                                // "payment_options": {
-                                //   "allowed_payment_method":
-                                //       "INSTANT_FUNDING_SOURCE"
-                                // },
-                                "item_list": {
-                                  "items": [
-                                    {
-                                      "name": "A demo product",
-                                      "quantity": 1,
-                                      "price": '10.12',
-                                      "currency": "USD"
-                                    }
-                                  ],
-
-                                  // shipping address is not required though
-                                  "shipping_address": {
-                                    "recipient_name": "Jane Foster",
-                                    "line1": "Travis County",
-                                    "line2": "",
-                                    "city": "Austin",
-                                    "country_code": "US",
-                                    "postal_code": "73301",
-                                    "phone": "+00000000",
-                                    "state": "Texas"
-                                  },
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => UsePaypal(
+                          sandboxMode: true,
+                          clientId:
+                              "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+                          secretKey:
+                              "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                          returnURL: "https://samplesite.com/return",
+                          cancelURL: "https://samplesite.com/cancel",
+                          transactions: const [
+                            {
+                              "amount": {
+                                "total": '10.12',
+                                "currency": "USD",
+                                "details": {
+                                  "subtotal": '10.12',
+                                  "shipping": '0',
+                                  "shipping_discount": 0
                                 }
+                              },
+                              "description":
+                                  "The payment transaction description.",
+                              // "payment_options": {
+                              //   "allowed_payment_method":
+                              //       "INSTANT_FUNDING_SOURCE"
+                              // },
+                              "item_list": {
+                                "items": [
+                                  {
+                                    "name": "A demo product",
+                                    "quantity": 1,
+                                    "price": '10.12',
+                                    "currency": "USD"
+                                  }
+                                ],
+
+                                // aunque la dirección de envío no es obligatoria
+                                "shipping_address": {
+                                  "recipient_name": "Jane Foster",
+                                  "line1": "Travis County",
+                                  "line2": "",
+                                  "city": "Austin",
+                                  "country_code": "US",
+                                  "postal_code": "73301",
+                                  "phone": "+00000000",
+                                  "state": "Texas"
+                                },
                               }
-                            ],
-                            note: "Contact us for any questions on your order.",
-                            onSuccess: (Map params) async {
-                              print("onSuccess: $params");
-                            },
-                            onError: (error) {
-                              print("onError: $error");
-                            },
-                            onCancel: (params) {
-                              print('cancelled: $params');
-                            }),
-                      ),
-                    )
-                  },)
+                            }
+                          ],
+                          note: "Contact us for any questions on your order.",
+                          onSuccess: (Map params) async {
+                            print("onSuccess: $params");
+                          },
+                          onError: (error) {
+                            print("onError: $error");
+                          },
+                          onCancel: (params) {
+                            print('cancelled: $params');
+                          }),
+                    ),
+                  )
+                },
+              )
             ],
           ),
         ),

@@ -14,6 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  //Estas son dos variables de instancia de tipo `String` que se inicializan con el valor 'Unknown'.
   String _scanBarcode = 'Unknown';
   String _scanBarcode2 = 'Unknown';
 
@@ -24,25 +25,28 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> scanQR() async {
     String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
+      //inicio de lectura de un codigo QR
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancelar', true, ScanMode.QR);
+          '#ff6666',
+          'Cancelar',
+          true,
+          ScanMode
+              .QR); //`ScanMode` que indica el tipo de código que se debe leer (QR o código de barras)
       print(barcodeScanRes);
     } on PlatformException {
+      // Si se produce una excepción de tipo PlatformException durante la lectura, se asigna a barcodeScanRes un mensaje de error
       barcodeScanRes = 'Failed to get platform version.';
     }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+    // Si el widget ha sido desmontado, no se realiza ninguna acción.
     if (!mounted) return;
-
+    // setState indica a Flutter que debe redibujar el widget para reflejar cambios en el estado.
     setState(() {
       _scanBarcode = barcodeScanRes;
-      if (_scanBarcode !="Unknown") {
+      if (_scanBarcode != "Unknown") {
         print("es distinto");
-        _scanBarcode2="codigo qr leido";
+        _scanBarcode2 = "codigo qr leido";
       }
     });
   }
@@ -57,10 +61,8 @@ class _MyAppState extends State<MyApp> {
                   child: Text('Valet Parking', textAlign: TextAlign.center)),
               backgroundColor: Colors.redAccent,
             ),
-            
             body: Builder(builder: (BuildContext context) {
               return Container(
-                
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
@@ -74,20 +76,19 @@ class _MyAppState extends State<MyApp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text("Lector QR",
-                         style: const TextStyle(
-                              fontSize: 20, color: Colors.white)),
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white)),
                         ElevatedButton(
                             onPressed: () => scanQR(),
-                            
                             child: const Text('Escanear')),
-                        Text (
-
+                        Text(
                           'Escaner : $_scanBarcode2\n',
                           style: const TextStyle(
                               fontSize: 20, color: Colors.white),
                         ),
-                        Text("Cronometro para tiempo", style: const TextStyle(
-                              fontSize: 20, color: Colors.white)),
+                        Text("Cronometro para tiempo",
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white)),
                         ElevatedButton(
                             child: const Text(
                                 "Verificación"), //el boton , y como se llamara el boton
