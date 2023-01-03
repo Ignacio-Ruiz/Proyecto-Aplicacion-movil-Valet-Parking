@@ -188,6 +188,7 @@ class _Crono extends State<Crono> {
                 child: Text('Reset'),
                 onPressed: _resetButtonPressed,
               ),
+              //boton pagar
               ElevatedButton(
                 child: const Text("Pagar"),
                 onPressed: () => {
@@ -195,13 +196,18 @@ class _Crono extends State<Crono> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) => UsePaypal(
+                          //Parametros para las configuraciones de conexión de PayPal y controlar los eventos de pago
+                          //'sandboxMode'Indica si se debe utilizar el modo de pruebas de PayPal
                           sandboxMode: true,
+                          // 'clienteId' y 'secretKey' son las claves de la aplicación de PayPal
                           clientId:
                               "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
                           secretKey:
                               "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                          //'returnURL' y 'cancelUrl'son las URL a las que se redirigirá el usuario después de completar o cancelar el pago
                           returnURL: "https://samplesite.com/return",
                           cancelURL: "https://samplesite.com/cancel",
+                          //'transactions' es una lista de transacciones que se deben realizar.
                           transactions: const [
                             {
                               "amount": {
