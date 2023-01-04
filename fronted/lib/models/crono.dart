@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import 'package:http/http.dart' as http;
@@ -194,13 +195,13 @@ class _Crono extends State<Crono> {
                           returnURL: "https://samplesite.com/return",
                           cancelURL: "https://samplesite.com/cancel",
                           //'transactions' es una lista de transacciones que se deben realizar.
-                          transactions: [
+                          transactions:  [
                             {
                               "amount": {
-                                "total": '10.12',
-                                "currency": _stopwatchText2,
+                                "total": _stopwatchText2,
+                                "currency": "USD",
                                 "details": {
-                                  "subtotal": '10.12',
+                                  "subtotal": _stopwatchText2,
                                   "shipping": '0',
                                   "shipping_discount": 0
                                 }
